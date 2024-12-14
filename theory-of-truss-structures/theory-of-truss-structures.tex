@@ -1,0 +1,428 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[big]{layaureo}
+\usepackage{amssymb,amsmath,amsthm,amsfonts,mathtools}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{siunitx}
+
+\usepackage{newpxtext,newpxmath}
+
+\usepackage{float}
+\floatstyle{plaintop}
+\newfloat{alg}{tbp}{loc}
+\floatname{alg}{Algorithm}
+
+\usepackage{quoting}
+\quotingsetup{font=small}
+
+\usepackage[autostyle,italian=guillemets]{csquotes}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bib.bib}
+
+\theoremstyle{definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{corolary}[proposition]{Corollary}
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem*{note}{Note}
+\newtheorem*{codes}{Code files}
+\newtheorem*{example}{Example}
+
+\DeclareMathOperator{\cof}{cof}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\are}{area}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\so}{SO}
+\DeclareMathOperator{\tr}{tr}
+
+\DeclarePairedDelimiter{\norma}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\funz}{\langle}{\rangle}
+
+\newcommand{\dind}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand{\omissis}{[\textellipsis\unkern]}
+\newcommand{\x}{x}
+\newcommand{\y}{u}
+\newcommand{\z}{y}
+\newcommand{\A}{\mathfrak{A}}
+\newcommand{\lin}{\text{Mat}}
+\newcommand{\sotre}{\text{Orth}^+}
+\newcommand{\orth}{\text{Orth}}
+\newcommand{\sym}{\text{Sym}}
+
+\begin{document}
+
+\author{Bernardo Ardini}
+\date{Padova, 9 dicembre 2024}
+\title{\bfseries The mechanics and thermodynamics of truss structures}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection*{Definition of truss structure}
+
+A truss structure is made by a set of vertices $v\in U=\{1,\dots,n\}$ and of elements $e\in\mathscr{E}\subset\{(e_1,e_2)\;|\;\text{$e_1,e_2\in U$ and $e_1<e_2$}\}$ connecting these vertices. The following function will be very useful
+\begin{align*}
+s\colon\mathscr{E}\times U&\to\{0,\pm1\} \\
+(e,v)&\mapsto s(e,v)=
+\begin{cases}
+1 & \text{if $v=e_1$} \\
+-1 & \text{if $v=e_2$} \\
+0 & \text{otherwise}
+\end{cases}.
+\end{align*}
+
+\subsection*{The vertex and the extensive quantities}
+
+We should see each vertex not simply as a point in space but instead we must think of it as including half of its surrounding elements. This means that, if we assign to each element an extensive quantity, then we can instead assign the same quantity also to vertices: this is done by equally splitting the content of an element among its extreme vertices.
+
+For example if each element $e$ has a mass $m^{(e)}$, we associate to each vertex $v$ a mass
+\[
+m^{(v)}=\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|m^{(e)}.
+\]
+
+\section{Kinematics}
+
+\subsection*{The placement of the truss structure}
+
+The placement of the truss structure is described by the position $x^{(v)}\in\mathbb{R}^N$ of each vertex $v$. The motion in the time interval $[0,T]$ is described by the motions $[0,T]\ni t\mapsto x^{(v)}(t)$ of each vertex $v$.
+
+\subsection*{The geometry of elements}
+
+For an element $e$ we define its midpoint and its vector as $x^{(e)}=\frac{x^{(e_1)}+x^{(e_2)}}{2}$ and $\Delta x^{(e)}=x^{(e_2)}-x^{(e_1)}$. We also define the length $l^{(e)}=|\Delta x^{(e)}|$ and the unit vector $n^{(e)}=\frac{\Delta x^{(e)}}{l^{(e)}}$.
+
+We regard the element as a beam of constant section and we call $a^{(e)}$ the area of that section. The volume of the elemt is defined as $v^{(e)}=l^{(e)}a^{(e)}$.
+
+\subsection*{The reference configuration}
+
+The configuration of the truss structure is fully described by the positions $x^{(v)}$ of all vertices and by the areas $a^{(e)}$ of the sections of all elements. It is useful to consider a particular configuration (usually the one that occur at time $t=0$) as the reference configuration. We will denote with capital letters like $X^{(v)}$, $A^{(v)}$ the quantities related to the reference configuration.
+
+Given a reference configuration it is possible to speak about strain of the elements. We define $\lambda=l/L$ and $J=v/V$. We introduce the natural strain as $\epsilon=\log\lambda$ which is characterized by the following properties:
+\begin{itemize}
+\item[(i)] $\epsilon=0$ if and only if $l=L$;
+\item[(ii)] $\dot{\epsilon}=\dot{l}/l$.
+\end{itemize}
+We also define the engineering strain as $\varepsilon=\frac{l-L}{L}$.
+
+\section{Mechanics}
+
+\subsection*{Momentum and angular momentum}
+
+We define the momentum and the angular momentum of a vertex respectively as $m^{(v)}\dot{x}^{(v)}$ and $m^{(v)}x^{v}\times\dot{x}^{(v)}$. For any subset $V\subset U$ of vertices its momentum and angular momentum are given summing the the momentum and angular momentum of each vertex $v\in V$.
+
+\subsection*{Tensions and external forces}
+
+For each element $e$ we call $T^{(e)}$ its tension. It is the force it exerts externally on the side of $e_1$ at the vertex $e_1$. On the side of $e_2$ it exert a force $-T^{(e)}$. Then element $e$ exert on $v$ a force $s(e,v)T^{(e)}$. We define the tension at vertex $v$ as
+\[
+T^{(v)}=\sum_{e\in\mathscr{E}}s(e,v)T^{(e)}.
+\]
+\begin{note}
+We should think that each vertex interact with the other vertices in correspondence of the midpoint of its surrounding elements. So the tensions should be seen as applied to the midpoint of elements.
+\end{note}
+
+We call $F^{(v)}$ the external force acting on vertex $v$.
+
+\begin{note}
+In static the tensions and the external forces must be seen as constants. In dynamics must be seen as functions of time. We notice also that at this level the tensions and the external forces must be seen as \emph{given}. Later we will see how they can be seen as dependent on the history of the structure by mean of constitutive relations.
+\end{note}
+
+\subsection*{The laws of mechanics}
+
+The dynamics is founded on the following laws: the balance of momentum and on the balance of angular momentum.
+
+The balance of momentum states that for each $V\subset U$ the rate of change of momentum of $V$ is given by the forces acting of it from the outside
+\[
+\frac{d}{dt}\sum_{v\in V}m^{(v)}\dot{x}^{(v)}=\sum_{v\in\partial V}\sum_{e\notin\mathscr{E}_V}s(e,v)T^{(e)}+\sum_{v\in V}F^{(v)}.
+\]
+Here $\partial V$ is the set of vertices $v\in V$ which have an element in common with some vertex $w\notin V$. And $\mathscr{E}_V$ is the set of $e\in\mathscr{E}$ with $e_1,e_2\in V$, that is elements entirely contained in $V$.
+\begin{proposition}
+\label{prop:balance-momentum}
+The balance of momentum is equivalent to the local statement
+\[
+m^{(v)}\ddot{x}^{(v)}=T^{(v)}+F^{(v)}\quad\text{for all $v\in U$}.
+\]
+\end{proposition}
+\begin{proof}
+It is clear that the balance of momentum imply the local statement. So let assume the local statement holds and we prove that also the balance of momentum holds. We have
+\begin{align*}
+\frac{d}{dt}\sum_{v\in V}m^{(v)}\dot{x}^{(v)}&=\sum_{v\in V}m^{(v)}\ddot{x}^{(v)}= \\
+&=\sum_{v\in V}\sum_{e\in\mathscr{E}}s(e,v)T^{(e)}+\sum_{v\in V}F^{(e)}= \\
+&=\sum_{e\in\mathscr{E}}T^{(e)}\sum_{v\in V}s(e,v)+\sum_{v\in V}F^{(e)}=\\
+&=\sum_{v\in\partial V}\sum_{e\notin\mathscr{E}_V}s(e,v)T^{(e)}+\sum_{v\in V}F^{(v)},
+\end{align*}
+where we have used that if $e\in\mathscr{E}_V$ then $\sum_{v\in V}s(e,v)=s(e,e_1)+s(e,e_2)=0$.
+\end{proof}
+
+The balance of angular momentum states that for each $V\subset U$ the rate of change of angular momentum of $V$ is given by the torque acting of it from the outside
+\[
+\frac{d}{dt}\sum_{v\in V}m^{(v)}x^{(v)}\times\dot{x}^{(v)}=\sum_{v\in\partial V}\sum_{e\notin\mathscr{E}_V}s(e,v)x^{(v)}\times T^{(e)}+\sum_{v\in V}x^{(v)}\times F^{(v)}.
+\]
+\begin{proposition}
+The balance of momentum together with the balance of angular momentum imply that for each element $e$ the tension $T^{(e)}$ is parallel to $\Delta x^{(e)}$.
+\end{proposition}
+\begin{proof}
+By the balance of momentum
+\[
+\begin{split}
+\frac{d}{dt}\sum_{v\in V}m^{(v)}x^{(v)}\times\dot{x}^{(v)}&=\sum_{v\in V}x^{(v)}\times m^{(v)}\ddot{x}^{(v)}=\sum_{v\in V}x^{(v)}\times\left(T^{(v)}+F^{(v)}\right) \\
+&=\sum_{v\in V}x^{(v)}\times\sum_{e\in\mathscr{E}}s(e,v)T^{(e)}+\sum_{v\in V}x^{(v)}\times F^{(e)} \\
+&=-\sum_{e\in\mathscr{E}}T^{(e)}\times\sum_{v\in V}s(e,v)x^{(v)}+\sum_{v\in V}x^{(v)}\times F^{(e)} \\
+&=\sum_{v\in V}x^{(v)}\times F^{(e)}-\sum_{e\notin\mathscr{E}_V}T^{(e)}\times\sum_{v\in V}s(e,v)x^{(v)}+\\
+&\hspace{75pt}+\sum_{e\in\mathscr{E}_V}T^{(e)}\times\Delta x^{(e)}.
+\end{split}
+\]
+Then by the balance of angular momentum the last term must be zero. Then by choosing $V=\{e_1,e_2\}$ the thesis follows.
+\end{proof}
+
+\subsection*{The balance of kinetic energy}
+
+For any $V\subset U$ we associate the kinetic energy $K(V)$, the power provided by outside forces $P(V)$ and the power expended by the internal forces $W(V)$, defined as follows:
+\begin{align*}
+K(V)&=\sum_{v\in V}\frac{1}{2}m^{(v)}|\dot{x}^{(v)}|^2,\\
+P(V)&=\sum_{v\in V}\dot{x}^{(v)}\cdot F^{(v)}+\sum_{v\in\partial V}\sum_{e\notin\mathscr{E}_V}s(e,v)\dot{x}^{(e)}\cdot T^{(e)}, \\
+W(V)&=-\sum_{e\in\mathscr{E}_V}\Delta \dot{x}^{(e)}\cdot T^{(e)}-\frac{1}{2}\sum_{v\in \partial V}\sum_{e\notin\mathscr{E}_V}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\end{align*}
+\begin{note}
+We observe that:
+\begin{itemize}
+\item[(i)] $P(V)$ include the power of the external forces and the power done by the tensions applied to the midpoint of the elements connecting $V$ with the remaining part of the structure;
+\item[(ii)] $W(V)$ include the power expended by the tensions of the elements entirely contained in $V$ and half of the power expended by the tensions of elements partially contained in $V$.
+\end{itemize}
+\end{note}
+
+The following theorem states is the balance of kinetic energy,
+\begin{theorem}
+It holds $\dot{K}=P+W$.
+\end{theorem}
+\begin{proof}
+Multiplying by $\dot{x}^{(v)}$ the local balance of momentum and summing in $v\in V$ we get
+\[
+\begin{split}
+\frac{d}{dt}K(V)&=\sum_{v\in V}m^{(v)}\ddot{x}^{(v)}\cdot\dot{x}^{(v)}=\sum_{v\in V}\dot{x}^{(v)}\cdot\left(T^{(v)}+F^{(v)}\right)=\\
+&=\sum_{v\in V}\dot{x}^{(v)}\cdot F^{(v)}+\sum_{v\in V}\sum_{e\notin\mathscr{E}_V}s(e,v)\dot{x}^{(v)}\cdot T^{(e)}+\sum_{e\in\mathscr{E}_V}T^{(e)}\cdot\sum_{v\in V}s(e,v)\dot{x}^{(v)}=\\
+&=\sum_{v\in V}\dot{x}^{(v)}\cdot F^{(v)}+\sum_{v\in V}\sum_{e\notin\mathscr{E}_V}s(e,v)\dot{x}^{(v)}\cdot T^{(e)}-\sum_{e\in\mathscr{E}_V}T^{(e)}\cdot\Delta\dot{x}^{(e)}.
+\end{split}
+\]
+Now let $v\in\partial V$ be the vertex of an element $e\notin\mathscr{E}_V$. Then we call $w\notin V$ the other vertex of $e$ and we write
+\[
+x^{(v)}=\frac{x^{(v)}-x^{(w)}}{2}+\frac{x^{(v)}+x^{(w)}}{2}=-\frac{1}{2}s(e,v)\Delta x^{(e)}+x^{(e)}.
+\]
+By substituting this expression in the second term of previous formula we get
+\[
+\begin{split}
+\sum_{v\in V}\sum_{e\notin\mathscr{E}_V}s(e,v)\dot{x}^{(v)}\cdot T^{(e)}=\sum_{v\in V}\sum_{e\notin\mathscr{E}_V}s(e,v)\dot{x}^{(e)}\cdot T^{(e)}-\frac{1}{2}\sum_{v\in V}\sum_{e\notin\mathscr{E}_V}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\end{split}
+\]
+This complete the proof.
+\end{proof}
+
+\section{Thermodynamics}
+
+\subsection*{Heat and temperature}
+
+Now we call $r^{(v)}$ the rate at which heat is provided to vertex $v$. For example if $r^{(e)}$ the rate at which heat is provided to element $e$, then
+\[
+r^{(v)}=\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|r^{(e)}.
+\]
+We call $q^{(e)}$ the rate at which heat flow from $e_1$ to $e_2$ along element $e$. We define the rate of heat gained by $V$ as
+\[
+Q(V)=\sum_{v\in V}r^{(v)}-\sum_{v\in\partial V}\sum_{e\notin\mathscr{E}_V}s(e,v)q^{(e)}.
+\]
+
+For each vertex $v$ we consider also its temperature $\theta^{(v)}$. To each element we assign the temperature $\theta^{(e)}=\frac{\theta^{(e_1)}+\theta^{(e_2)}}{2}$, the average of the temperature of its vertices, and $\Delta\theta^{(e)}=\theta^{(e_2)}-\theta^{(e_1)}$, the difference of temperature between its vertices.
+
+\subsection*{Internal energy and entropy}
+
+We introduce also the internal energy $U^{(v)}$ of vertex $v$. As usual, we can see the internal energy of a vertex as contained the half of elements that surround it:
+\[
+U^{(v)}=\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|U^{(e)}.
+\]
+We call $U(V)$ the internal energy of $V\subset U$, obtained by summing the internal energies of vertices $v\in V$.
+
+In analogous way we can consider the entropy $H^{(v)}$ of vertex $v$, $H^{(e)}$ of element $e$, $H(V)$ of part $V\subset U$. 
+
+\subsection*{The laws of thermodynamics}
+
+Thermodynamics is based on the following laws: the balance of energy (or first law) and the unbalance of entropy (or second law).
+
+The fist law states that that for each $V\subset U$ the following balance of energy holds
+\[
+\dot{K}(V)+\dot{U}(V)=P(V)+Q(V).
+\]
+It says that total energy is conserved. By using the theorem on the balance of kinetic energy, the first low can be equivalently stated as
+\[
+\dot{U}(V)=Q(V)-W(V).
+\]
+\begin{proposition}
+The first law is equivalent to the following local statement
+\[
+\dot{U}^{(v)}=r^{(v)}-\sum_{e\in\mathscr{E}}s(e,v)q^{(e)}+\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\]
+\end{proposition}
+\begin{proof}
+That the first law implies the local statement is trivial. The other implication can be proved as in Proposition~\ref{prop:balance-momentum}.
+\end{proof}
+
+The second law states that for each $V\subset U$
+\[
+\frac{d}{dt}\sum_{v\in V}H^{(v)}\ge\sum_{v\in V}\frac{r^{(v)}}{\theta^{(v)}}-\sum_{v\in\partial V}\sum_{e\notin\mathscr{E}_V}s(e,v)\frac{q^{(e)}}{\theta^{(v)}}.
+\]
+\begin{proposition}
+The second law is equivalent to the following local statement
+\[
+\dot{H}^{(v)}\ge \frac{r^{(v)}}{\theta^{(v)}}-\sum_{e\in\mathscr{E}}s(e,v)\frac{q^{(e)}}{\theta^{(v)}}.
+\]
+\end{proposition}
+\begin{proof}
+Argue as in previous propositions.
+\end{proof}
+
+\subsection*{Free energy and the dissipation inequality}
+
+By the local statement of the second law
+\[
+\theta^{(v)}\dot{H}^{(v)}\ge r^{(v)}-\sum_{e\in\mathscr{E}}s(e,v)q^{(e)}.
+\]
+Substituting in this inequality the local statement of first law and rearranging the terms, we obtain
+\[
+\dot{U}^{(v)}-\theta^{(v)}\dot{H}^{(v)}\le\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\]
+We now define the free energy of vertex $v$ as $\Psi^{(v)}=U^{(v)}-\theta^{(v)}H^{(v)}$. Then the previous inequality reads
+\[
+\dot{\Psi}^{(v)}+\dot{\theta}^{(v)}H^{(v)}\le\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\]
+This is an equivalent formulation of second law.
+
+If we neglect thermal effect then we can regard the temperature as a constant, so that
+\[
+\dot{\Psi}^{(v)}\le\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\]
+This is the dissipation inequality. It says that the power absorbed by the structure thorough internal tensions is converted into free energy but a certain amount of energy is dissipated during this exchange. The dissipation at vertex $v$ is defined as
+\[
+\delta^{(v)}=\frac{1}{2}\sum_{e\in\mathscr{E}}|s(e,v)|\Delta \dot{x}^{(e)}\cdot T^{(e)}-\dot{\Psi}^{(v)}.
+\]
+\begin{note}
+We make the following consideration because it will turn useful later. Given an element $e$ we can sum the dissipation inequality related to its vertices to get
+\[
+\dot{\Psi}^{(e)}\le\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\]
+\end{note}
+
+\section{Constitutive relations}
+
+Constitutive relations link together the quantities previously introduced in order to describe how a particular material behave. They must satisfy the restrictions imposed by the general law of mechanics of thermodynamics.
+
+Moreover we require also an additional restriction, called the principle of material frame indifference. It says that the behavior of the material does not change if we move in a rigid way all the structure.
+
+We know present rapidly the thermo-visco-elastic model but we will move on straight away to the simpler elastic model.
+
+\subsection*{The thermo-visco-elastic model}
+
+A possible form for constitutive relations is the following:
+\[
+\begin{cases}
+a^{(e)}=\hat{a}^{(e)}(\Delta x^{(e)},\Delta\dot{x}^{(e)},\theta^{(e)},\Delta\theta^{(e)}) \\
+T^{(e)}=\hat{T}^{(e)}(\Delta x^{(e)},\Delta\dot{x}^{(e)},\theta^{(e)},\Delta\theta^{(e)}) \\
+\Psi^{(e)}=\hat{\Psi}^{(e)}(\Delta x^{(e)},\Delta\dot{x}^{(e)},\theta^{(e)},\Delta\theta^{(e)})\\
+q^{(e)}=\hat{q}^{(e)}(\Delta x^{(e)},\Delta\dot{x}^{(e)},\theta^{(e)},\Delta\theta^{(e)})
+\end{cases}.
+\]
+With this model we can describe elastic materials taking into account the effect of friction and of temperature. The heat can propagate along the structure: a simple choice for the heat flux could be $q^{(e)}=-\kappa^{(e)}\Delta\theta^{(e)}$ where $\kappa^{(e)}$ is the thermal conductivity of $e$.
+
+\subsection*{The elastic model}
+
+Starting from the previous model but we neglecting thermal effects and friction, we consider the following form of constitutive relations:
+\[
+\begin{cases}
+a^{(e)}=\hat{a}^{(e)}(\Delta x^{(e)}) \\
+T^{(e)}=\hat{T}^{(e)}(\Delta x^{(e)}) \\
+\Psi^{(e)}=\hat{\Psi}^{(e)}(\Delta x^{(e)}) \\
+\end{cases}.
+\]
+
+We now focus on this simpler model and we look for the restrictions imposed by the general principles. 
+
+The conservation of angular momentum tell us that $T^{(e)}$ is parallel to $\Delta x^{(e)}$, we assume
+\[
+T^{(e)}=\sigma^{(e)}a^{(e)}n^{(e)} \\
+\]
+where $\sigma^{(e)}$ is the Cauchy stress. Then it suffice to specify the constitutive relation for the Cauchy stress in order to describe tensions, that is $\sigma^{(e)}=\hat{\sigma}^{(e)}(\Delta x^{(e)})$. We introduce also Kirchhoff stress $\tau^{(e)}=J^{(e)}\sigma^{(e)}$ with constitutive relation $\tau^{(e)}=\hat{\tau}^{(e)}(\Delta x^{(e)})$. By simple calculations we have $T^{(e)}=\tau^{(e)}\frac{V^{(e)}}{l^{(e)}}n^{(e)}$.
+
+The principle of material frame indifference says that scalar quantities must depend only on $l^{(e)}=|\Delta x^{(e)}|$. So our constitutive relations can be simplified into
+\[
+\begin{cases}
+a^{(e)}=\hat{a}^{(e)}(\epsilon^{(e)}) \\
+\tau^{(e)}=\hat{\tau}^{(e)}(\epsilon^{(e)}) \\
+\Psi^{(e)}=\hat{\Psi}^{(e)}(\epsilon^{(e)}) \\
+\end{cases},
+\]
+
+Now we also express the free energy in terms of the density of free energy $\psi^{(e)}$ with respect to referential volume, that is $\Psi^{(e)}=V^{(e)}\psi^{(e)}$. Then the last constitutive relation can be replaced by $\psi^{(e)}=\hat{\psi}^{(e)}(\epsilon^{(e)})$. Now we study the consequence of dissipation inequality. The dissipation inequality, as noted, says that for each element $e$ holds
+\[
+\dot{\Psi}^{(e)}\le\Delta \dot{x}^{(e)}\cdot T^{(e)}.
+\]
+Then, by means of the constitutive relations
+\[
+V^{(e)}\dind{\hat{\psi}^{(e)}}{\epsilon^{(e)}}\dot{\epsilon}^{(e)}\le\hat{\tau}^{(e)}\frac{V^{(e)}}{l^{(e)}}\frac{\Delta x^{(e)}\cdot\Delta\dot{x}^{(e)}}{l^{(e)}}.
+\]
+But
+\[
+\frac{\Delta x^{(e)}\cdot\Delta\dot{x}^{(e)}}{|l^{(e)}|^2}=\frac{\frac{1}{2}\frac{d}{dt}|l^{(e)}|^2}{|l^{(e)}|^2}=\frac{\dot{l}^{(e)}}{l^{(e)}}=\dot{\epsilon}^{(e)}.
+\]
+This implies that $\dind{\hat{\psi}^{(e)}}{\epsilon^{(e)}}=\hat{\tau}^{(e)}$.
+
+\begin{example}
+An example of constitutive relation for the free energy is given by $\psi=\frac{1}{2}E\epsilon^2$ where $E$ is called Young modulus. Then the Kirchhoff stress is $\tau=E\epsilon$. We note that this constitutive relation is sufficient to solve the equation of motion, since the tension can be expressed in term of $\tau$ even if we do not know the cross section.
+\end{example}
+\begin{example}
+A constitutive relation for the section area is $a=A\left(\frac{l}{L}\right)^{-2\nu}$ where $\nu$ is called Poisson ratio. It is defined by the requirement that
+\[
+\frac{\dot{a}}{a}=-2\nu\frac{\dot{l}}{l}.
+\]
+\end{example}
+\begin{note}
+From now on we will consider only the elastic model.
+\end{note}
+
+\section{The problem of static}
+
+We now consider the following problem: to determine the equilibrium configuration of the structure given the position of some of its vertices and the force acting on the remaining. We call $V\subset U$ the set of vertices whose position we specify, and $W=U\setminus V$ the set of remaining vertices. Then the problem reads: find $\{x^{(w)}\}_{w\in W}$ such that
+\[
+\begin{cases}
+x^{(v)}=\overline{x}^{(v)} & \text{for $v\in V$} \\
+T^{(w)}+F^{(w)}=0 & \text{for $w\in W$} \\
+\end{cases},
+\]
+where $\overline{x}^{(v)}$ is the assigned position of each vertex $v\in V$. We can assume that
+\[
+F^{(w)}=G^{(v)}+L^{(v)}=m^{(w)}\Phi(x^{(w)})+L^{(w)},
+\]
+where $\Phi\colon\mathbb{R}^N\to\mathbb{R}^N$ is a field of force per unit mass and $L^{(w)}$ is an external load acting on vertex $w$.
+
+We define the vector $x\in\mathbb{R}^m$, with $m=\#W\cdot N$, by putting in column the vectors $\{x^{(w)}\}_{w\in W}$. We also define $T$ and $F$ by putting in column $\{T^{(w)}\}_{w\in W}$ and $\{F^{(w)}\}_{w\in W}$. Clearly $T=T(x)$ and $F=F(x)$. Moreover $G$ and $L$ are similarly defined.
+
+We introduce also the position dependent force as $S=T+G$ and the residual force $R=T+G+L$. We call stiffness matrix the Jacobian matrix $K=DS$. 
+
+The following local existence theorem holds.
+\begin{theorem}
+Let $S\colon\mathscr{A}\to\mathbb{R}^m$ where $\mathscr{A}\subset\mathbb{R}^m$ open. Assume that $R\in C^1(\mathscr{A})$. Let $x_0\in\mathscr{A}$ such that $S(x_0)=L_0\in\mathbb{R}^m$ and $\det K(x_0)\neq0$. Then there exists $\epsilon>0$ and $\delta>0$ such that if $L\in B(L_0,\delta)$, we can find a unique solution $x\in B(x_0,\epsilon)$ such that $S(x)+L=0$. 
+\end{theorem}
+\begin{proof}
+It is a simple application of Inverse Function Theorem.
+\end{proof}
+
+\nocite{bonet-wood}
+\nocite{nm}
+\nocite{gurtin-anand-fried}
+\nocite{silhavy}
+
+\printbibliography
+
+\end{document}
