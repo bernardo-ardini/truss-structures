@@ -422,4 +422,10 @@ int main()
 	fprintm("X.dat",&X,"w");
 	fprintm("x.dat",&x,"w");
 	export_story("xs.dat");
+	
+	struct matrix k;
+	struct matrix y;
+	compute_y(&x,&y);
+	K(&y,&k);
+	fprintm("K.dat",&k,"w");
 }

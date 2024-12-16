@@ -146,7 +146,7 @@ void _backward_solve(struct matrix *U,struct matrix *b)
 
 void _linsolve(struct matrix *A,struct matrix *b)
 {
-	_lu_serial(A);
+	_lu(A);
 	_forward_solve(A,b);
 	_backward_solve(A,b);
 }
